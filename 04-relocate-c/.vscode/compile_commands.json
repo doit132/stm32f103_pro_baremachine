@@ -1,0 +1,21 @@
+[
+{
+  "directory": "/home/doit/stm32f103_pro/04-relocate-c",
+  "arguments": ["/usr/local/arm/bin/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc", "-c", "-Wall", "-std=c11", "-IDrivers/BSP/uart", "-IUser/inc", "-DUSE_HAL_DRIVER", "-DCORE_CM3", "-DSTM32MP157Dxx", "-mcpu=cortex-m3", "-mfpu=fpv4-sp-d16", "-mfloat-abi=soft", "--specs=nano.specs", "-specs=rdimon.specs", "--specs=nosys.specs", "-Wall", "-fmessage-length=0", "-mthumb", "-fdata-sections", "-ffunction-sections", "-nostartfiles", "-fno-builtin", "-o", "build/obj/STM32F103_Pro/cross/none/unset/Drivers/BSP/uart/uart.c.o", "Drivers/BSP/uart/uart.c"],
+  "file": "Drivers/BSP/uart/uart.c"
+},
+{
+  "directory": "/home/doit/stm32f103_pro/04-relocate-c",
+  "arguments": ["/usr/local/arm/bin/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc", "-c", "-Wall", "-std=c11", "-IDrivers/BSP/uart", "-IUser/inc", "-DUSE_HAL_DRIVER", "-DCORE_CM3", "-DSTM32MP157Dxx", "-mcpu=cortex-m3", "-mfpu=fpv4-sp-d16", "-mfloat-abi=soft", "--specs=nano.specs", "-specs=rdimon.specs", "--specs=nosys.specs", "-Wall", "-fmessage-length=0", "-mthumb", "-fdata-sections", "-ffunction-sections", "-nostartfiles", "-fno-builtin", "-o", "build/obj/STM32F103_Pro/cross/none/unset/User/src/main.c.o", "User/src/main.c"],
+  "file": "User/src/main.c"
+},
+{
+  "directory": "/home/doit/stm32f103_pro/04-relocate-c",
+  "arguments": ["/usr/local/arm/bin/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc", "-c", "-Wall", "-std=c11", "-IDrivers/BSP/uart", "-IUser/inc", "-DUSE_HAL_DRIVER", "-DCORE_CM3", "-DSTM32MP157Dxx", "-mcpu=cortex-m3", "-mfpu=fpv4-sp-d16", "-mfloat-abi=soft", "--specs=nano.specs", "-specs=rdimon.specs", "--specs=nosys.specs", "-Wall", "-fmessage-length=0", "-mthumb", "-fdata-sections", "-ffunction-sections", "-nostartfiles", "-fno-builtin", "-o", "build/obj/STM32F103_Pro/cross/none/unset/User/src/string.c.o", "User/src/string.c"],
+  "file": "User/src/string.c"
+},
+{
+  "directory": "/home/doit/stm32f103_pro/04-relocate-c",
+  "arguments": ["/usr/local/arm/bin/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc", "-c", "-Wall", "-std=c11", "-IDrivers/BSP/uart", "-IUser/inc", "-DUSE_HAL_DRIVER", "-DCORE_CM3", "-DSTM32MP157Dxx", "-mcpu=cortex-m3", "-mfpu=fpv4-sp-d16", "-mfloat-abi=soft", "-mthumb", "-fdata-sections", "-ffunction-sections", "-o", "build/obj/STM32F103_Pro/cross/none/unset/User/src/startup_stm32f10x_hd.s.o", "User/src/startup_stm32f10x_hd.s"],
+  "file": "User/src/startup_stm32f10x_hd.s"
+}]
