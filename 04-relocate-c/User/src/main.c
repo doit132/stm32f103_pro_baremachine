@@ -13,6 +13,22 @@ void delay(volatile int d)
 		;
 }
 
+void SystemInit(void *loadaddr)
+{
+	extern int _vector_start;
+	extern int __bss_start;
+	extern int __bss_end;
+	unsigned int len;
+
+	// 代码, 数据重定位
+	len = &__bss_start - &_vector_start;
+	memcpy(&_vector_start, loadaddr, len);
+
+	// bss clear
+	len = &__bss_end - &__bss_start;
+	memset(&__bss_start, 0, len);
+}
+
 int main()
 {
 	char c;

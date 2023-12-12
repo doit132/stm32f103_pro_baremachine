@@ -8,6 +8,11 @@ local download_cfg = "stlink.cfg"
 local ldscript_file_path = "User/src/STM32F103XE_FLASH.ld"
 local sdk_folder_path = "/usr/local/arm/bin/gcc-arm-none-eabi-10.3-2021.10"
 local bin_folder_path = sdk_folder_path.."/bin"
+local cross_compiler_prefix = "arm-none-eabi"
+
+local objdump = cross_compiler_prefix .. "-objdump"
+local objcopy = cross_compiler_prefix .. "-objcopy"
+local size = cross_compiler_prefix .. "-size"
 
 -- 设置工程名
 set_project("stm32mp157-generic")
@@ -23,7 +28,7 @@ set_config("plat","cross")
 add_rules("plugin.compile_commands.autoupdate", {outputdir = "./"})
 
 -- 自定义工具链
-toolchain("arm-none-eabi")
+toolchain(cross_compiler_prefix)
     -- 标记为独立工具链
     set_kind("standalone")
     -- 定义交叉编译工具链地址
@@ -55,7 +60,7 @@ target(project_name)
         "-mthumb",
         "-fdata-sections -ffunction-sections",
         "-nostartfiles",
-        "-fno-builtin"
+        "-fno-builtin",
         -- 下面这个优化选项, 会导致 delay 延时出问题, 如果有下面这个优化选项, 延时形参必须 volatile 修饰
         -- "-Os",
     }
@@ -74,6 +79,7 @@ target(project_name)
         -- 链接库文件
         "-lc",
         "-lm",
+        "-nostdlib",
         -- 产生的依赖文件存放位置
         "-Wl,-Map=" .. target_dir .. "/" .. project_name .. ".map,--cref -Wl,--gc-sections",
     }
@@ -91,7 +97,7 @@ target(project_name)
     set_kind("binary")
     set_extension(".elf")
 
-    add_toolchains("arm-none-eabi")
+    add_toolchains(cross_compiler_prefix)
     set_warnings("all")
     set_languages("c11", "cxx17")
 
@@ -118,15 +124,17 @@ after_build(
     function(target)
         import("core.project.task")
         cprint("${bright green onwhite}${ok_hand} 储存空间占用情况 ${ok_hand}")
-        os.exec(string.format("arm-none-eabi-objcopy -O ihex %s.elf %s.hex", target_dir .. '/' .. project_name, target_dir .. '/' .. project_name))
-        os.exec(string.format("arm-none-eabi-objcopy -O binary %s.elf %s.bin", target_dir .. '/' .. project_name, target_dir .. '/' .. project_name))
-        os.exec(string.format("arm-none-eabi-size -Ax %s.elf", target_dir .. '/' .. project_name))
-        os.exec(string.format("arm-none-eabi-size -Bd %s.elf", target_dir .. '/' .. project_name))
+        -- xmake 无法执行 objdump 命令生成反汇编文件, 报错 file not fount
+        -- os.exec(string.format("%s -D %s.elf > %s.dis", objdump, target_dir .. '/' .. project_name, target_dir .. '/' .. project_name))
+        os.exec(string.format("%s -O ihex %s.elf %s.hex", objcopy, target_dir .. '/' .. project_name, target_dir .. '/' .. project_name))
+        os.exec(string.format("%s -O binary %s.elf %s.bin", objcopy, target_dir .. '/' .. project_name, target_dir .. '/' .. project_name))
+        os.exec(string.format("%s -Ax %s.elf", size, target_dir .. '/' .. project_name))
+        os.exec(string.format("%s -Bd %s.elf", size, target_dir .. '/' .. project_name))
     end
 )
 
 -- on_run(
 --     function(target)
---         os.exec("openocd -f %s -c 'program ./%s/%s.elf verify reset exit'", download_cfg, target_dir, project_name)
+--         os.exec("openocd -f %s -c 'program ./%s/%s.hex verify reset exit'", download_cfg, target_dir, project_name)
 --     end
 -- )
