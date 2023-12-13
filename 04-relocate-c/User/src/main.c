@@ -13,22 +13,6 @@ void delay(volatile int d)
 		;
 }
 
-void SystemInit(void *loadaddr)
-{
-	extern int _vector_start;
-	extern int __bss_start;
-	extern int __bss_end;
-	unsigned int len;
-
-	// 代码, 数据重定位
-	len = &__bss_start - &_vector_start;
-	memcpy(&_vector_start, loadaddr, len);
-
-	// bss clear
-	len = &__bss_end - &__bss_start;
-	memset(&__bss_start, 0, len);
-}
-
 int main()
 {
 	char c;
@@ -62,6 +46,10 @@ int main()
 	putchar(g_Char);
 	putchar(g_Char2);
 
+	extern int _svector;
+	extern int _sdata;
+	put_s_hex("_svector: ", (unsigned int)&_svector);
+	put_s_hex("_sdata: ", (unsigned int)&_sdata);
 	while (1) {
 		c = getchar();
 		putchar(c);

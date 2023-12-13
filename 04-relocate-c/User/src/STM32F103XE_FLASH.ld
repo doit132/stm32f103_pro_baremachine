@@ -52,14 +52,17 @@ SECTIONS
     .isr_vector :
     {
         . = ALIGN(4);
+        _svector = .;
         KEEP(*(.isr_vector)) /* Startup code */
         . = ALIGN(4);
+        _evector = .;
     } >FLASH
-
+    _sitext = LOADADDR(.text);
     /* The program code and other data goes into FLASH */
     .text :
     {
         . = ALIGN(4);
+        _stext = .;
         *(.text)           /* .text sections (code) */
         *(.text*)          /* .text* sections (code) */
         *(.glue_7)         /* glue arm to thumb code */
@@ -71,7 +74,7 @@ SECTIONS
 
         . = ALIGN(4);
         _etext = .;        /* define a global symbols at end of code */
-    } >FLASH
+    }>FLASH
 
     /* Constant data goes into FLASH */
     .rodata :
